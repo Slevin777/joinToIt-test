@@ -1,15 +1,15 @@
-const Joi = require('joi')
-const mongoose = require('mongoose')
+const Joi = require('joi');
+const mongoose = require('mongoose');
 
 const employeeSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: true
+      required: true,
     },
     lastName: {
       type: String,
-      required: true
+      required: true,
     },
     email: {
       type: String,
@@ -19,14 +19,14 @@ const employeeSchema = new mongoose.Schema(
     },
     company: {
       type: String,
-    }
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
-)
+);
 
-const Employee = mongoose.model('Employee', employeeSchema)
+const Employee = mongoose.model('Employee', employeeSchema);
 
 function validateEmployee(employee) {
   const schema = {
@@ -34,11 +34,11 @@ function validateEmployee(employee) {
     lastName: Joi.string().required(),
     phone: Joi.string(),
     email: Joi.string(),
-    company: Joi.string()
-  }
+    company: Joi.string(),
+  };
 
-  return Joi.validate(employee, schema)
+  return Joi.validate(employee, schema);
 }
 
-exports.Employee = Employee
-exports.validate = validateEmployee
+exports.Employee = Employee;
+exports.validate = validateEmployee;

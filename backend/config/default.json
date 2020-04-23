@@ -1,0 +1,4 @@
+{
+  "jwtPrivateKey": "joinToIt",
+  "db": "mongodb://localhost/joinToIt"
+}
