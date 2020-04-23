@@ -4,6 +4,22 @@ const mongoose = require('mongoose');
 const config = require('config');
 const error = require('./middleware/error');
 
+///////////////////////////////////////////
+const faker = require('faker');
+console.log(faker.fake('{{name.lastName}}'));
+
+faker.seed(123);
+
+var firstRandom = faker.random.number();
+
+// Setting the seed again resets the sequence.
+faker.seed(123);
+
+var secondRandom = faker.random.number();
+
+console.log(firstRandom);
+///////////////////////////////////////////
+
 const app = express();
 const db = config.get('db');
 
@@ -21,7 +37,6 @@ mongoose
   .connect(db, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    // useCreateIndex: true,
     useFindAndModify: false,
   })
   .then(() => console.log(`Connected to ${db}`));
