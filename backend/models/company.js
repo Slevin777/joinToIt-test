@@ -1,26 +1,21 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
-const companySchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-    },
-    logo: {
-      type: String,
-    },
-    website: {
-      type: String,
-    },
+const companySchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  email: {
+    type: String,
+  },
+  logo: {
+    type: String,
+  },
+  website: {
+    type: String,
+  },
+});
 
 const Company = mongoose.model('Company', companySchema);
 

@@ -1,25 +1,29 @@
 const { Company, validate } = require('../models/company');
 const express = require('express');
+const upload = require('../middleware/multer');
+const auth = require('../middleware/auth');
 
 const router = express.Router();
 
 //get all companies
 router.get('/', async (req, res) => {
   // throw new Error('fdsfs');
-  const companies = await Company.find().sort('lastName');
+  const companies = await Company.find().sort('lastName').select('-__v');
 
   res.send(companies);
 });
 
-//add new employee
-router.post('/', async (req, res) => {
+//add new company
+router.post('/', upload.single('logo'), async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
+
+  const logoPath = req.file.path;
 
   let company = new Company({
     name: req.body.name,
     email: req.body.email,
-    logo: req.body.logo,
+    logo: logoPath,
     website: req.body.website,
   });
 
@@ -30,15 +34,15 @@ router.post('/', async (req, res) => {
 
 //get company by Id
 router.get('/:id', async (req, res) => {
-  const Company = await Company.findById(req.params.id);
+  const company = await Company.findById(req.params.id);
 
-  if (!Company)
+  if (!company)
     return res.status(400).send('Company with given id wan not found');
 
-  res.send(Company);
+  res.send(company);
 });
 
-//update employee by Id
+//update company by Id
 router.put('/:id', async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -61,9 +65,8 @@ router.put('/:id', async (req, res) => {
 });
 
 //delete company by Id
-router.delete('/:id', async (req, res) => {
-  const company = await Company.findById(req.params.id);
-
+router.delete('/:id', auth, async (req, res) => {
+  const company = await Company.findByIdAndRemove(req.params.id);
   if (!company)
     return res.status(400).send('Company with given id wan not found');
 

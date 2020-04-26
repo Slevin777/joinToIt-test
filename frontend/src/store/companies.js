@@ -6,6 +6,7 @@ const slice = createSlice({
   initialState: {
     list: [],
     loading: false,
+    error: null,
   },
   reducers: {
     companiesRequested: (state, action) => {
@@ -13,6 +14,7 @@ const slice = createSlice({
     },
     companiesRequestFailed: (state, action) => {
       state.loading = false;
+      state.error = action.payload;
     },
     companiesReceived: (state, action) => {
       state.list = action.payload;
@@ -20,6 +22,18 @@ const slice = createSlice({
     },
     companyAdded: (state, action) => {
       state.list.push(action.payload);
+    },
+    companyLoaded: (state, action) => {
+      state.list.push(action.payload);
+    },
+    companyUpdated: (state, action) => {
+      const index = state.list.findIndex(
+        (company) => company._id === action.payload._id
+      );
+      state.list[index] = action.payload;
+    },
+    companyDeleted: (state, action) => {
+      state.list.filter((company) => company._id !== action.payload._id);
     },
   },
 });
@@ -29,6 +43,9 @@ const {
   companiesRequestFailed,
   companiesReceived,
   companyAdded,
+  companyUpdated,
+  companyDeleted,
+  companyLoaded,
 } = slice.actions;
 
 export default slice.reducer;
@@ -50,4 +67,30 @@ export const addCompany = (company) =>
     method: 'post',
     data: company,
     onSuccess: companyAdded.type,
+  });
+
+export const loadCompany = (companyId) =>
+  apiCallBegan({
+    url: url + '/' + companyId,
+    onSuccess: companyLoaded.type,
+  });
+
+export const updateCompany = (company) => {
+  const body = { ...company };
+  delete body._id;
+
+  return apiCallBegan({
+    url: `${url}/${company._id}`,
+    method: 'put',
+    data: body,
+    onSuccess: companyUpdated.type,
+  });
+};
+
+export const deleteCompany = (company) =>
+  apiCallBegan({
+    url: `${url}/${company._id}`,
+    method: 'delete',
+    data: company,
+    onSuccess: companyDeleted.type,
   });

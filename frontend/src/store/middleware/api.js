@@ -21,9 +21,18 @@ const api = ({ dispatch }) => (next) => async (action) => {
     if (onSuccess) return dispatch({ type: onSuccess, payload: response.data });
     dispatch(apiCallSuccess(response.data));
   } catch (error) {
-    if (onError) return dispatch({ type: onError, payload: error.message });
-    dispatch(apiCallFailed(error.message));
+    if (onError) {
+      alert(error.response.data);
+      return dispatch({ type: onError, payload: error.response.data });
+    }
+    alert(error.response.data);
+    dispatch(apiCallFailed(error.response.data));
   }
 };
+
+// export function setJwt(jwt) {
+const jwt = localStorage.token;
+axios.defaults.headers.common['x-auth-token'] = jwt;
+// }
 
 export default api;
