@@ -1,30 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, makeStyles } from '@material-ui/core';
-import { addEmloyee } from '../store/employees';
+import {
+  TextField,
+  Button,
+  makeStyles,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@material-ui/core';
+import { addEmloyee, deleteEmployee, updateEmployee } from '../store/employees';
+import { loadCompanies } from '../store/companies';
 
-const EmployeeForm = ({ history, match }) => {
-  const [employee, setCompany] = useState({
+const EmployeeForm = ({ match }) => {
+  const [employee, setEmployee] = useState({
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
-    company: '5ea47c3f9a52fd3f1c07d348',
+    company: '',
   });
 
   const dispatch = useDispatch();
-  const employees = useSelector((state) => state.employees);
+  const employees = useSelector((state) => state.employees.list);
+  const companies = useSelector((state) => state.companies.list);
 
   const employeeId = match.params.id;
 
   useEffect(() => {
+    dispatch(loadCompanies());
     if (employeeId === 'new') return;
 
-    const employee = employees.list.find(
-      (employee) => employee._id === employeeId
-    );
-    setCompany(employee);
-  }, [employees.list, employeeId]);
+    const employee = employees.find((employee) => employee._id === employeeId);
+    setEmployee(mapToViewModel(employee));
+  }, [employees, employeeId, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,20 +41,37 @@ const EmployeeForm = ({ history, match }) => {
     if (employeeId === 'new') {
       dispatch(addEmloyee(employee));
     } else {
-      // dispatch(updateEmployee(employee));
+      dispatch(updateEmployee(employee));
     }
-    // history.push('/companies');
   };
 
   const handleDelete = () => {
-    // dispatch(deleteCompany(employee));
+    dispatch(deleteEmployee(employee));
   };
 
   const updateField = (e) => {
-    setCompany({
+    setEmployee({
       ...employee,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleChangeCompany = (e) => {
+    setEmployee({
+      ...employee,
+      company: e.target.value,
+    });
+  };
+
+  const mapToViewModel = (employee) => {
+    return {
+      _id: employee._id,
+      firstName: employee.firstName,
+      lastName: employee.lastName,
+      email: employee.email,
+      phone: employee.phone,
+      company: employee.company._id,
+    };
   };
 
   const classes = useStyles();
@@ -81,13 +107,21 @@ const EmployeeForm = ({ history, match }) => {
           className={classes.input}
           onChange={updateField}
         />
-        {/* <TextField
-          label="Phone"
-          value={employee.company.name}
-          name="phone"
-          className={classes.input}
-          // onChange={updateField}
-        /> */}
+        <FormControl>
+          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={employee.company}
+            onChange={handleChangeCompany}
+          >
+            {companies.map((company) => (
+              <MenuItem key={company._id} value={company._id}>
+                {company.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <div className="buttons">
           <Button
@@ -102,7 +136,6 @@ const EmployeeForm = ({ history, match }) => {
             <Button
               variant="contained"
               color="secondary"
-              type="submit"
               onClick={handleDelete}
             >
               delete

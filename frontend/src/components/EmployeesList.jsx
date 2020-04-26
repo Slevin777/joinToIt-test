@@ -26,6 +26,10 @@ const EmployeesList = () => {
       label: 'Last Name',
     },
     {
+      path: 'company.name',
+      label: 'Company',
+    },
+    {
       path: 'email',
       label: 'E-mail',
     },

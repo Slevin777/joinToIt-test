@@ -5,7 +5,7 @@ import CompaniesList from './components/CompaniesList';
 import EmployeesList from './components/EmployeesList';
 import { useDispatch } from 'react-redux';
 import Header from './components/Header';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router';
 import LoginPage from './LoginPage';
 import CompanyForm from './components/CompanyForm';
 import { Container } from '@material-ui/core';

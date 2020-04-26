@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, makeStyles, Avatar } from '@material-ui/core';
 import { addCompany, updateCompany, deleteCompany } from '../store/companies';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 const CompanyForm = ({ history, match }) => {
   const [company, setCompany] = useState({
@@ -38,12 +38,10 @@ const CompanyForm = ({ history, match }) => {
     } else {
       dispatch(updateCompany(company));
     }
-    history.push('/companies');
   };
 
   const handleDelete = () => {
     dispatch(deleteCompany(company));
-    history.replace('/companies');
   };
 
   const handleSelectFile = (e) => {
@@ -122,7 +120,7 @@ const CompanyForm = ({ history, match }) => {
             <Button
               variant="contained"
               color="secondary"
-              type="submit"
+              // type="submit"
               onClick={handleDelete}
             >
               delete
@@ -130,7 +128,7 @@ const CompanyForm = ({ history, match }) => {
           )}
         </div>
       </form>
-      <br></br>
+      {/* <br></br>
       <hr />
       <div className="user">
         <h1>Manage users</h1>
@@ -142,7 +140,7 @@ const CompanyForm = ({ history, match }) => {
         >
           new Employee
         </Button>
-      </div>
+      </div> */}
     </>
   );
 };

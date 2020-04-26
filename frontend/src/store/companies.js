@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { apiCallBegan } from './api';
+import { history } from '../index';
 
 const slice = createSlice({
   name: 'companies',
@@ -22,18 +23,22 @@ const slice = createSlice({
     },
     companyAdded: (state, action) => {
       state.list.push(action.payload);
+      history.goBack();
     },
     companyLoaded: (state, action) => {
-      state.list.push(action.payload);
+      state.currentCompany = action.payload;
+      state.loading = false;
     },
     companyUpdated: (state, action) => {
       const index = state.list.findIndex(
         (company) => company._id === action.payload._id
       );
       state.list[index] = action.payload;
+      history.goBack();
     },
     companyDeleted: (state, action) => {
       state.list.filter((company) => company._id !== action.payload._id);
+      history.goBack();
     },
   },
 });
