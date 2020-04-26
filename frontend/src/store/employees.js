@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { apiCallBegan } from './api';
+import { history } from '../index';
 
 const slice = createSlice({
   name: 'employees',
@@ -20,6 +21,8 @@ const slice = createSlice({
     },
     employeeAdded: (state, action) => {
       state.list.push(action.payload);
+      console.log(history);
+      history.push('/companies');
     },
   },
 });
