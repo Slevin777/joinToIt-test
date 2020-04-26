@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadEmployees } from '../store/employees';
 import Table from './common/table';
 import { Link } from 'react-router-dom';
-import { Button } from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
 
 const EmployeesList = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,22 @@ const EmployeesList = () => {
   useEffect(() => {
     dispatch(loadEmployees());
   }, [dispatch]);
+
+  const classes = useStyles();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+
+  //get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = employees.slice(indexOfFirstPost, indexOfLastPost);
+
+  const totalPages = Math.ceil(employees.length / postsPerPage);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   const columns = [
     {
@@ -53,9 +70,24 @@ const EmployeesList = () => {
       >
         New Employee
       </Button>
-      <Table columns={columns} data={employees} />
+      <Table columns={columns} data={currentPosts} />
+      <Pagination
+        count={totalPages}
+        onChange={handlePageChange}
+        color="primary"
+        shape="rounded"
+        className={classes.pagination}
+      />
     </>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  pagination: {
+    display: 'flex',
+    justifyContent: 'center',
+    margin: '20px 0 50px',
+  },
+}));
 
 export default EmployeesList;

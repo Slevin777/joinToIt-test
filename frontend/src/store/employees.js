@@ -21,7 +21,6 @@ const slice = createSlice({
     },
     employeeAdded: (state, action) => {
       state.list.push(action.payload);
-      console.log(history);
       history.goBack();
     },
     employeeUpdated: (state, action) => {

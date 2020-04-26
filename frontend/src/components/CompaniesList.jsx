@@ -1,33 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadCompanies } from '../store/companies';
 import Table from './common/table';
 import { Link } from 'react-router-dom';
 import { Button, Avatar, makeStyles } from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
 
 const CompaniesList = () => {
   const dispatch = useDispatch();
   const companies = useSelector((state) => state.companies.list);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+
+  //get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = companies.slice(indexOfFirstPost, indexOfLastPost);
+
+  const totalPages = Math.ceil(companies.length / postsPerPage);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
   useEffect(() => {
     dispatch(loadCompanies());
   }, [dispatch]);
 
-  const serverUrl = 'http://localhost:9001/';
   const classes = useStyles();
 
   const columns = [
     {
       path: 'logo',
       label: 'Logo',
-      content: (company) => (
-        <Avatar
-          alt="logo"
-          variant="square"
-          src={serverUrl + company.logo}
-          className={classes.large}
-        />
-      ),
+      content: (company) => {
+        return (
+          <Avatar
+            alt="logo"
+            variant="square"
+            src={company.logo}
+            className={classes.logoSize}
+          />
+        );
+      },
     },
     {
       path: 'name',
@@ -56,19 +72,27 @@ const CompaniesList = () => {
       >
         Add company
       </Button>
-      <Table columns={columns} data={companies} />
+      <Table columns={columns} data={currentPosts} />
+      <Pagination
+        count={totalPages}
+        onChange={handlePageChange}
+        color="primary"
+        shape="rounded"
+        className={classes.pagination}
+      />
     </>
   );
 };
 
 const useStyles = makeStyles((theme) => ({
-  small: {
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-  },
-  large: {
+  logoSize: {
     width: theme.spacing(7),
     height: theme.spacing(7),
+  },
+  pagination: {
+    display: 'flex',
+    justifyContent: 'center',
+    margin: '20px 0 50px',
   },
 }));
 

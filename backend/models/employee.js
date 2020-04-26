@@ -18,7 +18,8 @@ const employeeSchema = new mongoose.Schema(
       type: String,
     },
     company: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Company',
     },
   },
   {

@@ -2,6 +2,7 @@ const { Company, validate } = require('../models/company');
 const express = require('express');
 const upload = require('../middleware/multer');
 const auth = require('../middleware/auth');
+const config = require('config');
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.post('/', upload.single('logo'), async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const logoPath = req.file.path;
+  const logoPath = config.get('serverURL') + req.file.path;
 
   let company = new Company({
     name: req.body.name,

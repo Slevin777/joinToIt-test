@@ -59,7 +59,6 @@ const CompanyForm = ({ history, match }) => {
   };
 
   const classes = useStyles();
-  const serverUrl = 'http://localhost:9001/';
 
   return (
     <>
@@ -68,7 +67,7 @@ const CompanyForm = ({ history, match }) => {
           <Avatar
             alt="logo"
             variant="square"
-            src={serverUrl + company.logo}
+            src={company.logo}
             className={classes.large}
           />
         )}
@@ -128,19 +127,6 @@ const CompanyForm = ({ history, match }) => {
           )}
         </div>
       </form>
-      {/* <br></br>
-      <hr />
-      <div className="user">
-        <h1>Manage users</h1>
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          to="employees/new"
-        >
-          new Employee
-        </Button>
-      </div> */}
     </>
   );
 };

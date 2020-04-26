@@ -5,7 +5,6 @@ const router = express.Router();
 
 //get all employees
 router.get('/', async (req, res) => {
-  throw new Error('fdsfs');
   const employees = await Employee.find().sort('lastName');
 
   res.send(employees);

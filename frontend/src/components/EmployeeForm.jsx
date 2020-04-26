@@ -70,7 +70,7 @@ const EmployeeForm = ({ match }) => {
       lastName: employee.lastName,
       email: employee.email,
       phone: employee.phone,
-      company: employee.company._id,
+      // company: employee.company._id,
     };
   };
 
