@@ -138,7 +138,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     maxWidth: 400,
-    // margin: '0 auto',
   },
   input: {
     marginBottom: theme.spacing(2),

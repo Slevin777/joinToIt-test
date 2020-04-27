@@ -64,13 +64,14 @@ const EmployeeForm = ({ match }) => {
   };
 
   const mapToViewModel = (employee) => {
+    const company = employee.company ? employee.company._id : '';
     return {
       _id: employee._id,
       firstName: employee.firstName,
       lastName: employee.lastName,
       email: employee.email,
       phone: employee.phone,
-      company: employee.company._id,
+      company,
     };
   };
 
@@ -108,7 +109,7 @@ const EmployeeForm = ({ match }) => {
           onChange={updateField}
         />
         <FormControl>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <InputLabel id="demo-simple-select-label">Company</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -152,7 +153,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     maxWidth: 400,
-    // margin: '0 auto',
   },
   input: {
     marginBottom: theme.spacing(2),

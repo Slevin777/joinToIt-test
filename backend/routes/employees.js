@@ -77,7 +77,7 @@ router.put('/:id', async (req, res) => {
 
 //delete employee by Id
 router.delete('/:id', async (req, res) => {
-  const employee = await Employee.findById(req.params.id);
+  const employee = await Employee.findByIdAndRemove(req.params.id);
 
   if (!employee)
     return res.status(400).send('Employee with given id wan not found');
