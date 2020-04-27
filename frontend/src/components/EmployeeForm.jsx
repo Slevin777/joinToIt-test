@@ -70,7 +70,7 @@ const EmployeeForm = ({ match }) => {
       lastName: employee.lastName,
       email: employee.email,
       phone: employee.phone,
-      // company: employee.company._id,
+      company: employee.company._id,
     };
   };
 
@@ -123,7 +123,7 @@ const EmployeeForm = ({ match }) => {
           </Select>
         </FormControl>
 
-        <div className="buttons">
+        <div className={classes.buttons}>
           <Button
             variant="contained"
             color="primary"
@@ -168,6 +168,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     maxWidth: 120,
     margin: `${theme.spacing(2)}px 0`,
+  },
+  buttons: {
+    marginTop: 20,
   },
 }));
 

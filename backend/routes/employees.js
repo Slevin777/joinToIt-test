@@ -5,7 +5,9 @@ const router = express.Router();
 
 //get all employees
 router.get('/', async (req, res) => {
-  const employees = await Employee.find().sort('lastName');
+  const employees = await Employee.find()
+    .sort('lastName')
+    .populate('company', 'name');
 
   res.send(employees);
 });
