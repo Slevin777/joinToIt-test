@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { apiCallBegan, apiCallSuccess, apiCallFailed } from '../api.js';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const api = ({ dispatch }) => (next) => async (action) => {
   if (action.type !== apiCallBegan.type) return next(action);
@@ -22,10 +24,10 @@ const api = ({ dispatch }) => (next) => async (action) => {
     dispatch(apiCallSuccess(response.data));
   } catch (error) {
     if (onError) {
-      alert(error.response.data);
+      toast.error(error.response.data);
       return dispatch({ type: onError, payload: error.response.data });
     }
-    alert(error.response.data);
+    toast.error(error.response.data);
     dispatch(apiCallFailed(error.response.data));
   }
 };

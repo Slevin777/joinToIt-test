@@ -1,21 +1,21 @@
 const { Company, validate } = require('../models/company');
 const express = require('express');
-const upload = require('../middleware/multer');
+const sendMail = require('../mailer');
 const auth = require('../middleware/auth');
+const upload = require('../middleware/multer');
 const config = require('config');
 
 const router = express.Router();
 
 //get all companies
 router.get('/', async (req, res) => {
-  // throw new Error('fdsfs');
   const companies = await Company.find().sort('lastName').select('-__v');
 
   res.send(companies);
 });
 
 //add new company
-router.post('/', upload.single('logo'), async (req, res) => {
+router.post('/', upload.single('file'), async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -29,6 +29,19 @@ router.post('/', upload.single('logo'), async (req, res) => {
   });
 
   await company.save();
+
+  sendMail(
+    'airon223@gmail.com',
+    'New Company added',
+    `Company ${req.body.name} have beed added`,
+    function (err, data) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('message sent!');
+      }
+    }
+  );
 
   res.send(company);
 });
@@ -44,7 +57,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //update company by Id
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('file'), async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 

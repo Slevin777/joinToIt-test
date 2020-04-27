@@ -33,7 +33,7 @@ mongoose
   .then(() => console.log(`Connected to ${db}`));
 
 //generate mock data
-mock(5);
+mock(1);
 
 const port = process.env.PORT || 9001;
 

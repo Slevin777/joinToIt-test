@@ -12,6 +12,8 @@ import { Container } from '@material-ui/core';
 import { fetchUser } from './store/auth';
 import EmployeeForm from './components/EmployeeForm';
 
+import { ToastContainer } from 'react-toastify';
+
 function App() {
   const dispatch = useDispatch();
 
@@ -32,6 +34,7 @@ function App() {
           <Route path="/employees" component={EmployeesList} />
           <Redirect to="/companies" />
         </Switch>
+        <ToastContainer autoClose={3000} />
       </Container>
     </>
   );
