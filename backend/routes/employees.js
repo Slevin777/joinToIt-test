@@ -5,10 +5,22 @@ const router = express.Router();
 
 //get all employees
 router.get('/', async (req, res) => {
-  const employees = await Employee.find()
-    .sort('lastName')
-    .populate('company', 'name');
+  let employees;
+  const { pageNumber, pageSize } = req.query;
 
+  if (pageNumber && pageSize) {
+    employees = await Company.find()
+      .select('-__v')
+      .skip((pageNumber - 1) * pageSize)
+      .limit(parseInt(pageSize))
+      .sort('lastName')
+      .populate('company', 'name');
+  } else {
+    employees = await Employee.find()
+      .select('-__v')
+      .sort('lastName')
+      .populate('company', 'name');
+  }
   res.send(employees);
 });
 
