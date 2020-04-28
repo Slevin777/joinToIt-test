@@ -69,16 +69,20 @@ router.get('/:id', async (req, res) => {
 });
 
 //update company by Id
-router.put('/:id', upload.single('file'), async (req, res) => {
+router.put('/:id', upload.single('logo'), async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
+
+  const logoPath = req.file
+    ? config.get('serverURL') + req.file.path
+    : req.body.logo;
 
   const company = await Company.findByIdAndUpdate(
     req.params.id,
     {
       name: req.body.name,
       email: req.body.email,
-      logo: req.body.logo,
+      logo: logoPath,
       website: req.body.website,
     },
     { new: true }
@@ -91,7 +95,7 @@ router.put('/:id', upload.single('file'), async (req, res) => {
 });
 
 //delete company by Id
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id' /* , auth */, async (req, res) => {
   const company = await Company.findByIdAndRemove(req.params.id);
   if (!company)
     return res.status(400).send('Company with given id wan not found');

@@ -80,17 +80,13 @@ export const loadCompany = (companyId) =>
     onSuccess: companyLoaded.type,
   });
 
-export const updateCompany = (company) => {
-  const body = { ...company };
-  delete body._id;
-
-  return apiCallBegan({
-    url: `${url}/${company._id}`,
+export const updateCompany = (company, companyId) =>
+  apiCallBegan({
+    url: `${url}/${companyId}`,
     method: 'put',
-    data: body,
+    data: company,
     onSuccess: companyUpdated.type,
   });
-};
 
 export const deleteCompany = (company) =>
   apiCallBegan({

@@ -15,9 +15,6 @@ const companySchema = new mongoose.Schema({
   website: {
     type: String,
   },
-  // file: {
-  //   type: Object,
-  // },
 });
 
 const Company = mongoose.model('Company', companySchema);
@@ -28,7 +25,6 @@ function validateCompany(company) {
     email: Joi.string(),
     logo: Joi.string(),
     website: Joi.string(),
-    // file: Joi.object(),
   };
 
   return Joi.validate(company, schema);

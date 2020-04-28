@@ -6,11 +6,10 @@ import { addCompany, updateCompany, deleteCompany } from '../store/companies';
 
 const CompanyForm = ({ history, match }) => {
   const [company, setCompany] = useState({
-    logo: ' ',
+    logo: '',
     name: '',
     email: '',
     website: '',
-    file: null,
   });
 
   const dispatch = useDispatch();
@@ -29,16 +28,9 @@ const CompanyForm = ({ history, match }) => {
     e.preventDefault();
 
     if (companyId === 'new') {
-      const formData = new FormData();
-      formData.append('name', company.name);
-      formData.append('email', company.email);
-      formData.append('logo', company.logo);
-      // formData.append('file', company.file);
-      formData.append('website', company.website);
-
-      dispatch(addCompany(formData));
+      dispatch(addCompany(creataFormData(company)));
     } else {
-      dispatch(updateCompany(company));
+      dispatch(updateCompany(creataFormData(company), company._id));
     }
   };
 
@@ -60,12 +52,24 @@ const CompanyForm = ({ history, match }) => {
     });
   };
 
+  const creataFormData = (obj) => {
+    let fd = new FormData();
+
+    for (let [key, value] of Object.entries(obj)) {
+      if (value && key !== '_id') {
+        fd.append(key, value);
+      }
+    }
+    return fd;
+  };
+
   const classes = useStyles();
+  console.log(typeof company.logo);
 
   return (
     <>
       <form onSubmit={handleSubmit} className={classes.form}>
-        {company._id && (
+        {typeof company.logo === 'string' && (
           <Avatar
             alt="logo"
             variant="square"
