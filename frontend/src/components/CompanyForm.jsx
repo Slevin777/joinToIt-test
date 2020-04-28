@@ -33,7 +33,7 @@ const CompanyForm = ({ history, match }) => {
       formData.append('name', company.name);
       formData.append('email', company.email);
       formData.append('logo', company.logo);
-      formData.append('file', company.file);
+      // formData.append('file', company.file);
       formData.append('website', company.website);
 
       dispatch(addCompany(formData));
@@ -49,7 +49,7 @@ const CompanyForm = ({ history, match }) => {
   const handleSelectFile = (e) => {
     setCompany({
       ...company,
-      file: e.target.files[0],
+      logo: e.target.files[0],
     });
   };
 
